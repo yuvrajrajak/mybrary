@@ -17,7 +17,24 @@ const upload = multer({
 // All Books Route
 
 router.get('/', async (req, res) => {
-  res.send('All Books');
+
+  let query = Book.find({})
+
+  if(req.query.title != null && req.query.title != '' ){
+    query = query.regex('title', new RegExp(req.query.title,'i'))
+  }
+
+  try {
+      const books = await query.exec()
+
+      res.render('books/index',{
+      books: books,
+      searchOption: req.query
+    })
+  }catch {
+    res.redirect('/')
+  }
+
 })
 
 // New Book Route
@@ -29,9 +46,9 @@ router.get('/new', async (req, res) => {
 // Create Book Route
 
 router.post('/', upload.single('cover'), async (req, res) => {
-  console.log("Received request:", req.body);
+  // console.log("Received request:", req.body);
   const fileName = req.file != null ? req.file.filename : null
-  console.log('Uploaded file',fileName);
+  // console.log('Uploaded file',fileName);
   const book = new Book({
     title: req.body.title,
     author: req.body.author,
