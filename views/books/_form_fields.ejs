@@ -4,7 +4,7 @@
 </div>
 
 <div>
-  <lable>Author</lable>
+  <label>Author</label>
   <select name="author">
     <% authors.forEach(author => { %> <% if(author.id === book.author) { %>
 
@@ -46,6 +46,7 @@
     <input
       type="file"
       name="cover"
+      class="filepond"
     />
 </div>
 
